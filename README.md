@@ -58,6 +58,32 @@ Everything lands in the working directory:
 Test-set AUC, F1, sensitivity, specificity and a per-branch breakdown are
 printed to stdout as it goes.
 
+## Results
+
+Full write-up is in [`report.pdf`](report.pdf): *Hybrid Linear and Non-Linear
+Feature Selection for QSAR Classification using a Stacked Ensemble*. It covers
+the dataset (1,055 compounds, 41 descriptors), the architecture, and the
+analysis behind each figure.
+
+Headline numbers, on the held-out 20% test set:
+
+| Model | AUC | F1 | Sensitivity | Specificity |
+| --- | --- | --- | --- | --- |
+| **Stacked ensemble** | 0.941 | **0.844** | 0.873 | 0.900 |
+| HGB (Boruta) | **0.947** | 0.831 | 0.831 | 0.914 |
+| SVM (LASSO) | 0.915 | 0.775 | 0.873 | 0.807 |
+| KNN (full features) | 0.917 | 0.816 | 0.845 | 0.886 |
+
+HGB alone edges the ensemble on AUC, but it misses more biodegradable
+compounds. The stack trades a little of that for the best F1 and the most even
+sensitivity/specificity split. The meta-learner leans on HGB and KNN
+(coefficients 1.65 and 1.62) and weighs SVM lower at 0.42, though the SVM branch
+still earns its place by making different mistakes than the other two.
+
+These are the figures from the run reported in the paper. Seeds are fixed at 42
+throughout, so a rerun should land in the same place, give or take whatever your
+scikit-learn version does differently.
+
 ## Layout
 
 | File | What's in it |
